@@ -53,11 +53,11 @@ export default function ProductDetailPage() {
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
           {/* Image */}
-          <div ref={imageRef} className="bg-white rounded-xl border border-default-200 overflow-hidden">
+          <div ref={imageRef} className="bg-white rounded-xl border border-default-200 overflow-hidden flex items-center justify-center p-2 md:p-4">
             <img
               src={product.image}
               alt={product.name}
-              className="w-full h-64 md:h-96 object-cover"
+              className="w-full h-64 md:h-96 object-contain rounded-lg"
             />
           </div>
 
