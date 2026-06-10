@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef, useState, useCallback } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { Card, Badge } from '@heroui/react'
 import { ArrowLeft, ShoppingCart, Star, Package, Check } from 'lucide-react'
@@ -12,6 +12,8 @@ export default function ProductDetailPage() {
   const { addToCart } = useCart()
   const imageRef = useRef<HTMLDivElement>(null)
   const infoRef = useRef<HTMLDivElement>(null)
+  const btnRef = useRef<HTMLButtonElement>(null)
+  const [added, setAdded] = useState(false)
 
   const product = products.find((p) => p.id === Number(id))
 
@@ -23,6 +25,23 @@ export default function ProductDetailPage() {
       gsap.fromTo(infoRef.current, { opacity: 0, x: 40 }, { opacity: 1, x: 0, duration: 0.6, delay: 0.15, ease: 'power3.out' })
     }
   }, [id])
+
+  const handleAddToCart = useCallback(() => {
+    if (!product) return
+    addToCart(product)
+    setAdded(true)
+
+    if (btnRef.current) {
+      gsap.fromTo(
+        btnRef.current,
+        { scale: 0.9 },
+        { scale: 1.05, duration: 0.2, ease: 'back.out(2)', yoyo: true, repeat: 1 }
+      )
+    }
+
+    const timer = setTimeout(() => setAdded(false), 1500)
+    return () => clearTimeout(timer)
+  }, [addToCart, product])
 
   if (!product) {
     return (
@@ -113,11 +132,25 @@ export default function ProductDetailPage() {
                   </span>
                 </div>
                 <button
-                  className="flex items-center justify-center gap-2 w-full px-6 py-4 rounded-lg bg-primary-600 text-white font-semibold text-base hover:bg-primary-700 active:bg-primary-800 transition-colors"
-                  onClick={() => addToCart(product)}
+                  ref={btnRef}
+                  className={`flex items-center justify-center gap-2 w-full px-6 py-4 rounded-lg font-semibold text-base transition-colors ${
+                    added
+                      ? 'bg-success text-white'
+                      : 'bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800'
+                  }`}
+                  onClick={handleAddToCart}
                 >
-                  <ShoppingCart size={20} strokeWidth={2} />
-                  <span>Añadir al carrito</span>
+                  {added ? (
+                    <>
+                      <Check size={20} strokeWidth={2} />
+                      <span>Agregado al carrito</span>
+                    </>
+                  ) : (
+                    <>
+                      <ShoppingCart size={20} strokeWidth={2} />
+                      <span>Añadir al carrito</span>
+                    </>
+                  )}
                 </button>
                 <Link
                   to="/cart"

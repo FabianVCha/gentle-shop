@@ -1,7 +1,7 @@
-import { useRef } from 'react'
+import { useRef, useState, useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import { Card } from '@heroui/react'
-import { ShoppingCart, Star } from 'lucide-react'
+import { ShoppingCart, Star, Check } from 'lucide-react'
 import gsap from 'gsap'
 import type { Product } from '../data/products'
 import { useCart } from '../context/CartContext'
@@ -13,6 +13,8 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
   const { addToCart } = useCart()
   const cardRef = useRef<HTMLDivElement>(null)
+  const btnRef = useRef<HTMLButtonElement>(null)
+  const [added, setAdded] = useState(false)
 
   const handleMouseEnter = () => {
     if (cardRef.current) {
@@ -25,6 +27,22 @@ export default function ProductCard({ product }: ProductCardProps) {
       gsap.to(cardRef.current, { scale: 1, duration: 0.3, ease: 'power2.out' })
     }
   }
+
+  const handleAddToCart = useCallback(() => {
+    addToCart(product)
+    setAdded(true)
+
+    if (btnRef.current) {
+      gsap.fromTo(
+        btnRef.current,
+        { scale: 0.85 },
+        { scale: 1.08, duration: 0.15, ease: 'back.out(2)', yoyo: true, repeat: 1 }
+      )
+    }
+
+    const timer = setTimeout(() => setAdded(false), 1500)
+    return () => clearTimeout(timer)
+  }, [addToCart, product])
 
   return (
     <div ref={cardRef} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
@@ -59,11 +77,25 @@ export default function ProductCard({ product }: ProductCardProps) {
             ${product.price.toFixed(2)}
           </span>
           <button
-            onClick={() => addToCart(product)}
-            className="flex items-center gap-2 px-3 py-2 rounded-lg bg-primary-600 text-white font-semibold text-sm hover:bg-primary-700 active:bg-primary-800 transition-colors flex-shrink-0"
+            ref={btnRef}
+            onClick={handleAddToCart}
+            className={`flex items-center gap-2 px-3 py-2 rounded-lg font-semibold text-sm transition-colors flex-shrink-0 ${
+              added
+                ? 'bg-success text-white'
+                : 'bg-primary-600 text-white hover:bg-primary-700 active:bg-primary-800'
+            }`}
           >
-            <ShoppingCart size={16} strokeWidth={2.5} className="flex-shrink-0" />
-            <span className="hidden sm:inline">Añadir</span>
+            {added ? (
+              <>
+                <Check size={16} strokeWidth={2.5} className="flex-shrink-0" />
+                <span className="hidden sm:inline">Agregado</span>
+              </>
+            ) : (
+              <>
+                <ShoppingCart size={16} strokeWidth={2.5} className="flex-shrink-0" />
+                <span className="hidden sm:inline">Añadir</span>
+              </>
+            )}
           </button>
         </Card.Footer>
       </Card>

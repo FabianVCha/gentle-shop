@@ -1,11 +1,25 @@
-import { useState } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { Wrench, Menu, X, ShoppingCart } from 'lucide-react'
+import gsap from 'gsap'
 import { useCart } from '../context/CartContext'
 
 export default function Header() {
   const { totalItems } = useCart()
   const [menuOpen, setMenuOpen] = useState(false)
+  const badgeRef = useRef<HTMLSpanElement>(null)
+  const prevTotal = useRef(totalItems)
+
+  useEffect(() => {
+    if (badgeRef.current && totalItems > 0 && totalItems !== prevTotal.current) {
+      gsap.fromTo(
+        badgeRef.current,
+        { scale: 0.5, opacity: 0 },
+        { scale: 1, opacity: 1, duration: 0.35, ease: 'back.out(2.5)' }
+      )
+    }
+    prevTotal.current = totalItems
+  }, [totalItems])
 
   return (
     <header className="bg-primary-600 text-white shadow-md sticky top-0 z-50">
@@ -29,7 +43,7 @@ export default function Header() {
             <ShoppingCart size={18} strokeWidth={2} />
             <span>Carrito</span>
             {totalItems > 0 && (
-              <span className="flex items-center justify-center w-5 h-5 rounded-full bg-danger text-white text-xs font-bold">
+              <span ref={badgeRef} className="flex items-center justify-center w-5 h-5 rounded-full bg-danger text-white text-xs font-bold">
                 {totalItems}
               </span>
             )}
@@ -64,7 +78,7 @@ export default function Header() {
             <ShoppingCart size={18} strokeWidth={2} />
             <span>Carrito</span>
             {totalItems > 0 && (
-              <span className="flex items-center justify-center w-5 h-5 rounded-full bg-danger text-white text-xs font-bold">
+              <span ref={badgeRef} className="flex items-center justify-center w-5 h-5 rounded-full bg-danger text-white text-xs font-bold">
                 {totalItems}
               </span>
             )}
