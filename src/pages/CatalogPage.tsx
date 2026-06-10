@@ -5,6 +5,7 @@ import gsap from 'gsap'
 import { products } from '../data/products'
 import ProductCard from '../components/ProductCard'
 import SkeletonCard from '../components/SkeletonCard'
+import KitSection from '../components/KitSection'
 
 const categories = ['Todos', 'Eléctrico', 'Herramientas', 'Pintura', 'Fontanería', 'Jardín', 'Accesorios', 'Pegamentos', 'Seguridad']
 
@@ -115,6 +116,14 @@ export default function CatalogPage() {
           </div>
         )}
       </div>
+
+      {/* Kits */}
+      <KitSection
+        title="Conjuntos"
+        subtitle="Compra por proyecto"
+        description="No sabés qué necesitás? Elegí el proyecto y te armamos el kit."
+        showAll={true}
+      />
     </div>
   )
 }
