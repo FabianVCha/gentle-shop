@@ -1,17 +1,31 @@
+import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { Button, Card, Separator } from '@heroui/react'
 import { Minus, Plus, Trash2, ShoppingBag, ArrowLeft } from 'lucide-react'
+import gsap from 'gsap'
 import { useCart } from '../context/CartContext'
 
 export default function CartPage() {
   const { items, removeFromCart, updateQuantity, totalPrice, clearCart } = useCart()
+  const itemsRef = useRef<HTMLDivElement>(null)
+  const summaryRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    if (itemsRef.current && items.length > 0) {
+      const cards = itemsRef.current.querySelectorAll('.cart-item')
+      gsap.fromTo(cards, { opacity: 0, y: 20 }, { opacity: 1, y: 0, duration: 0.4, stagger: 0.1, ease: 'power3.out' })
+    }
+    if (summaryRef.current) {
+      gsap.fromTo(summaryRef.current, { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1, duration: 0.5, delay: 0.2, ease: 'power3.out' })
+    }
+  }, [items])
 
   if (items.length === 0) {
     return (
-      <div className="flex-1 flex flex-col items-center justify-center bg-default-50 py-20">
+      <div className="flex-1 flex flex-col items-center justify-center bg-default-50 py-20 px-4">
         <ShoppingBag size={64} className="text-default-300 mb-4" />
-        <h2 className="text-2xl font-semibold text-default-700 mb-2">Tu carrito está vacío</h2>
-        <p className="text-default-500 mb-6">Explora nuestros productos y encuentra algo que te guste.</p>
+        <h2 className="text-2xl font-semibold text-default-700 mb-2 text-center">Tu carrito está vacío</h2>
+        <p className="text-default-500 mb-6 text-center">Explora nuestros productos y encuentra algo que te guste.</p>
         <Link
           to="/"
           className="inline-flex items-center px-6 py-3 rounded-lg bg-primary-600 text-white font-semibold hover:bg-primary-700 transition-colors"
@@ -24,20 +38,20 @@ export default function CartPage() {
   }
 
   return (
-    <div className="flex-1 bg-default-50 py-10 px-6">
+    <div className="flex-1 bg-default-50 py-6 md:py-10 px-4 md:px-6">
       <div className="max-w-7xl mx-auto">
-        <h1 className="text-3xl font-bold text-default-900 mb-8">Carrito de compras</h1>
+        <h1 className="text-2xl md:text-3xl font-bold text-default-900 mb-6 md:mb-8">Carrito de compras</h1>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 md:gap-8">
           {/* Items */}
-          <div className="lg:col-span-2 space-y-4">
+          <div ref={itemsRef} className="lg:col-span-2 space-y-4">
             {items.map(({ product, quantity }) => (
-              <Card key={product.id} className="border border-default-200">
+              <Card key={product.id} className="cart-item border border-default-200">
                 <Card.Content className="flex flex-col sm:flex-row gap-4 p-4">
                   <img
                     src={product.image}
                     alt={product.name}
-                    className="w-full sm:w-32 h-32 object-cover rounded-lg"
+                    className="w-full sm:w-32 h-48 sm:h-32 object-cover rounded-lg"
                   />
                   <div className="flex-1 flex flex-col justify-between">
                     <div>
@@ -91,36 +105,38 @@ export default function CartPage() {
 
           {/* Summary */}
           <div className="lg:col-span-1">
-            <Card className="border border-default-200 sticky top-4">
-              <Card.Content className="p-6">
-                <h2 className="text-xl font-semibold text-default-900 mb-4">Resumen</h2>
-                <div className="space-y-3 mb-4">
-                  <div className="flex justify-between text-default-600">
-                    <span>Subtotal</span>
+            <div ref={summaryRef}>
+              <Card className="border border-default-200 sticky top-4">
+                <Card.Content className="p-4 md:p-6">
+                  <h2 className="text-xl font-semibold text-default-900 mb-4">Resumen</h2>
+                  <div className="space-y-3 mb-4">
+                    <div className="flex justify-between text-default-600">
+                      <span>Subtotal</span>
+                      <span>${totalPrice.toFixed(2)}</span>
+                    </div>
+                    <div className="flex justify-between text-default-600">
+                      <span>Envío</span>
+                      <span className="text-success font-medium">Gratis</span>
+                    </div>
+                  </div>
+                  <Separator className="my-4" />
+                  <div className="flex justify-between text-lg font-bold text-default-900 mb-6">
+                    <span>Total</span>
                     <span>${totalPrice.toFixed(2)}</span>
                   </div>
-                  <div className="flex justify-between text-default-600">
-                    <span>Envío</span>
-                    <span className="text-success font-medium">Gratis</span>
-                  </div>
-                </div>
-                <Separator className="my-4" />
-                <div className="flex justify-between text-lg font-bold text-default-900 mb-6">
-                  <span>Total</span>
-                  <span>${totalPrice.toFixed(2)}</span>
-                </div>
-                <Button variant="primary" className="w-full font-semibold py-6">
-                  Finalizar compra
-                </Button>
-                <Link
-                  to="/"
-                  className="mt-2 inline-flex items-center justify-center w-full px-4 py-2 rounded-lg text-default-600 hover:text-default-900 hover:bg-default-100 transition-colors text-sm"
-                >
-                  <ArrowLeft size={18} className="mr-2" />
-                  Seguir comprando
-                </Link>
-              </Card.Content>
-            </Card>
+                  <Button variant="primary" className="w-full font-semibold py-4 md:py-6">
+                    Finalizar compra
+                  </Button>
+                  <Link
+                    to="/"
+                    className="mt-2 inline-flex items-center justify-center w-full px-4 py-2 rounded-lg text-default-600 hover:text-default-900 hover:bg-default-100 transition-colors text-sm"
+                  >
+                    <ArrowLeft size={18} className="mr-2" />
+                    Seguir comprando
+                  </Link>
+                </Card.Content>
+              </Card>
+            </div>
           </div>
         </div>
       </div>
