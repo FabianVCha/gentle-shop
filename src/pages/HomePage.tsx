@@ -4,7 +4,7 @@ import { SlidersHorizontal } from 'lucide-react'
 import { products } from '../data/products'
 import ProductCard from '../components/ProductCard'
 
-const categories = ['Todos', 'Electrónica', 'Deportes', 'Accesorios', 'Hogar']
+const categories = ['Todos', 'Eléctrico', 'Herramientas', 'Pintura', 'Fontanería', 'Jardín', 'Accesorios', 'Pegamentos', 'Seguridad']
 
 export default function HomePage() {
   const [search, setSearch] = useState('')
@@ -22,10 +22,10 @@ export default function HomePage() {
       <section className="bg-gradient-to-r from-primary-600 to-primary-800 text-white py-16 px-6">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Descubre lo mejor en <span className="text-secondary-300">GentleShop</span>
+            Todo para tus <span className="text-secondary-300">proyectos</span>
           </h1>
           <p className="text-lg text-primary-100 max-w-2xl mx-auto">
-            Productos seleccionados con la mejor calidad y precios increíbles.
+            La ferretería más completa de la ciudad. Herramientas, pintura, materiales y más.
             Envío gratis en compras mayores a $50.
           </p>
         </div>
@@ -35,7 +35,7 @@ export default function HomePage() {
       <section className="max-w-7xl mx-auto px-6 py-8">
         <div className="flex flex-col md:flex-row gap-4 items-center justify-between mb-6">
           <Input
-            placeholder="Buscar productos..."
+            placeholder="Buscar herramientas, pintura..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
             className="max-w-md"
