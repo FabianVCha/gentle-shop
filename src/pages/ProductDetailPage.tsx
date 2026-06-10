@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useCallback } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import { Card, Badge } from '@heroui/react'
-import { ArrowLeft, ShoppingCart, Star, Package, Check } from 'lucide-react'
+import { ArrowLeft, ShoppingCart, Star, Package, Check, Minus, Plus } from 'lucide-react'
 import gsap from 'gsap'
 import { products } from '../data/products'
 import { useCart } from '../context/CartContext'
@@ -14,8 +14,13 @@ export default function ProductDetailPage() {
   const infoRef = useRef<HTMLDivElement>(null)
   const btnRef = useRef<HTMLButtonElement>(null)
   const [added, setAdded] = useState(false)
+  const [quantity, setQuantity] = useState(1)
 
   const product = products.find((p) => p.id === Number(id))
+
+  useEffect(() => {
+    setQuantity(1)
+  }, [id])
 
   useEffect(() => {
     if (imageRef.current) {
@@ -28,8 +33,9 @@ export default function ProductDetailPage() {
 
   const handleAddToCart = useCallback(() => {
     if (!product) return
-    addToCart(product)
+    addToCart(product, quantity)
     setAdded(true)
+    setQuantity(1)
 
     if (btnRef.current) {
       gsap.fromTo(
@@ -41,7 +47,7 @@ export default function ProductDetailPage() {
 
     const timer = setTimeout(() => setAdded(false), 1500)
     return () => clearTimeout(timer)
-  }, [addToCart, product])
+  }, [addToCart, product, quantity])
 
   if (!product) {
     return (
@@ -131,6 +137,27 @@ export default function ProductDetailPage() {
                     {product.stock > 0 ? 'En stock' : 'Agotado'}
                   </span>
                 </div>
+
+                {/* Selector de cantidad */}
+                <div className="flex items-center gap-3 mb-4 md:mb-6">
+                  <span className="text-sm text-default-600 font-medium">Cantidad:</span>
+                  <div className="flex items-center gap-2">
+                    <button
+                      onClick={() => setQuantity((q) => Math.max(1, q - 1))}
+                      className="flex items-center justify-center w-9 h-9 rounded-lg border border-default-300 hover:bg-default-100 active:bg-default-200 transition-colors"
+                    >
+                      <Minus size={16} strokeWidth={2.5} />
+                    </button>
+                    <span className="w-10 text-center font-semibold text-default-900">{quantity}</span>
+                    <button
+                      onClick={() => setQuantity((q) => Math.min(product.stock, q + 1))}
+                      className="flex items-center justify-center w-9 h-9 rounded-lg border border-default-300 hover:bg-default-100 active:bg-default-200 transition-colors"
+                    >
+                      <Plus size={16} strokeWidth={2.5} />
+                    </button>
+                  </div>
+                </div>
+
                 <button
                   ref={btnRef}
                   className={`flex items-center justify-center gap-2 w-full px-6 py-4 rounded-lg font-semibold text-base transition-colors ${
@@ -148,7 +175,7 @@ export default function ProductDetailPage() {
                   ) : (
                     <>
                       <ShoppingCart size={20} strokeWidth={2} />
-                      <span>Añadir al carrito</span>
+                      <span>Añadir {quantity > 1 ? `${quantity} al carrito` : 'al carrito'}</span>
                     </>
                   )}
                 </button>
