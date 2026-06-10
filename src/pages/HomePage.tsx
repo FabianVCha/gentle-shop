@@ -9,6 +9,7 @@ import CategorySection from '../components/CategorySection'
 import HeroSection from '../components/HeroSection'
 import AboutSection from '../components/AboutSection'
 import NewsletterSection from '../components/NewsletterSection'
+import KitSection from '../components/KitSection'
 
 const categories = ['Todos', 'Eléctrico', 'Herramientas', 'Pintura', 'Fontanería', 'Jardín', 'Accesorios', 'Pegamentos', 'Seguridad']
 
@@ -53,6 +54,9 @@ export default function HomePage() {
         </div>
         <CategorySection title="Pintura" category="Pintura" products={products} />
       </div>
+
+      {/* Conjuntos Comunes */}
+      <KitSection />
 
       {/* About / Features */}
       <div className="bg-default-50">
