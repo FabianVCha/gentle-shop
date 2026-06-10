@@ -4,12 +4,14 @@ import { SlidersHorizontal } from 'lucide-react'
 import gsap from 'gsap'
 import { products } from '../data/products'
 import ProductCard from '../components/ProductCard'
+import SkeletonCard from '../components/SkeletonCard'
 
 const categories = ['Todos', 'Eléctrico', 'Herramientas', 'Pintura', 'Fontanería', 'Jardín', 'Accesorios', 'Pegamentos', 'Seguridad']
 
 export default function HomePage() {
   const [search, setSearch] = useState('')
   const [activeCategory, setActiveCategory] = useState('Todos')
+  const [isLoading, setIsLoading] = useState(true)
   const heroRef = useRef<HTMLDivElement>(null)
   const cardsRef = useRef<HTMLDivElement>(null)
 
@@ -18,6 +20,11 @@ export default function HomePage() {
     const matchesCategory = activeCategory === 'Todos' || p.category === activeCategory
     return matchesSearch && matchesCategory
   })
+
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 600)
+    return () => clearTimeout(timer)
+  }, [])
 
   useEffect(() => {
     if (heroRef.current) {
@@ -30,7 +37,7 @@ export default function HomePage() {
   }, [])
 
   useEffect(() => {
-    if (cardsRef.current) {
+    if (cardsRef.current && !isLoading) {
       const cards = cardsRef.current.children
       gsap.fromTo(
         cards,
@@ -38,7 +45,7 @@ export default function HomePage() {
         { opacity: 1, y: 0, duration: 0.5, stagger: 0.08, ease: 'power3.out' }
       )
     }
-  }, [filtered])
+  }, [filtered, isLoading])
 
   return (
     <div className="flex-1 bg-default-50">
@@ -88,7 +95,13 @@ export default function HomePage() {
         </div>
 
         {/* Products Grid */}
-        {filtered.length > 0 ? (
+        {isLoading ? (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+            {Array.from({ length: 8 }).map((_, i) => (
+              <SkeletonCard key={i} />
+            ))}
+          </div>
+        ) : filtered.length > 0 ? (
           <div ref={cardsRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
             {filtered.map((product) => (
               <ProductCard key={product.id} product={product} />

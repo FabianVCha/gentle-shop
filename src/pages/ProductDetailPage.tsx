@@ -5,6 +5,7 @@ import { ArrowLeft, ShoppingCart, Star, Package, Check, Minus, Plus } from 'luci
 import gsap from 'gsap'
 import { products } from '../data/products'
 import { useCart } from '../context/CartContext'
+import { showToast } from '../components/ToastContainer'
 
 export default function ProductDetailPage() {
   const { id } = useParams<{ id: string }>()
@@ -36,6 +37,11 @@ export default function ProductDetailPage() {
     addToCart(product, quantity)
     setAdded(true)
     setQuantity(1)
+    showToast({
+      type: 'success',
+      title: 'Agregado al carrito',
+      message: `${product.name} x ${quantity}`,
+    })
 
     if (btnRef.current) {
       gsap.fromTo(

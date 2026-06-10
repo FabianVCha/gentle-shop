@@ -4,7 +4,11 @@ import { Wrench, Menu, X, ShoppingCart } from 'lucide-react'
 import gsap from 'gsap'
 import { useCart } from '../context/CartContext'
 
-export default function Header() {
+interface HeaderProps {
+  onCartOpen: () => void
+}
+
+export default function Header({ onCartOpen }: HeaderProps) {
   const { totalItems } = useCart()
   const [menuOpen, setMenuOpen] = useState(false)
   const badgeRef = useRef<HTMLSpanElement>(null)
@@ -36,8 +40,8 @@ export default function Header() {
           <Link to="/" className="text-white/90 hover:text-white transition-colors text-sm font-medium px-2 py-1">
             Inicio
           </Link>
-          <Link
-            to="/cart"
+          <button
+            onClick={onCartOpen}
             className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-secondary text-secondary-900 font-semibold text-sm hover:bg-secondary-400 transition-colors"
           >
             <ShoppingCart size={18} strokeWidth={2} />
@@ -47,7 +51,7 @@ export default function Header() {
                 {totalItems}
               </span>
             )}
-          </Link>
+          </button>
         </nav>
 
         {/* Mobile hamburger */}
@@ -70,10 +74,9 @@ export default function Header() {
           >
             Inicio
           </Link>
-          <Link
-            to="/cart"
-            className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-secondary text-secondary-900 font-semibold hover:bg-secondary-400 transition-colors"
-            onClick={() => setMenuOpen(false)}
+          <button
+            onClick={() => { onCartOpen(); setMenuOpen(false) }}
+            className="flex items-center gap-2 px-4 py-2.5 rounded-lg bg-secondary text-secondary-900 font-semibold hover:bg-secondary-400 transition-colors w-full"
           >
             <ShoppingCart size={18} strokeWidth={2} />
             <span>Carrito</span>
@@ -82,7 +85,7 @@ export default function Header() {
                 {totalItems}
               </span>
             )}
-          </Link>
+          </button>
         </div>
       )}
     </header>

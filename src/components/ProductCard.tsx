@@ -5,6 +5,7 @@ import { ShoppingCart, Star, Check } from 'lucide-react'
 import gsap from 'gsap'
 import type { Product } from '../data/products'
 import { useCart } from '../context/CartContext'
+import { showToast } from '../components/ToastContainer'
 
 interface ProductCardProps {
   product: Product
@@ -31,6 +32,11 @@ export default function ProductCard({ product }: ProductCardProps) {
   const handleAddToCart = useCallback(() => {
     addToCart(product)
     setAdded(true)
+    showToast({
+      type: 'success',
+      title: 'Agregado al carrito',
+      message: `${product.name} x 1`,
+    })
 
     if (btnRef.current) {
       gsap.fromTo(

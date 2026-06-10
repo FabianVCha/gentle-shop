@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { Card, Separator } from '@heroui/react'
-import { Minus, Plus, Trash2, ShoppingBag, ArrowLeft } from 'lucide-react'
+import { Minus, Plus, Trash2, ShoppingBag, ArrowLeft, ArrowRight } from 'lucide-react'
 import gsap from 'gsap'
 import { useCart } from '../context/CartContext'
 
@@ -117,9 +117,13 @@ export default function CartPage() {
                     <span>Total</span>
                     <span>${totalPrice.toFixed(2)}</span>
                   </div>
-                  <button className="flex items-center justify-center gap-2 w-full px-6 py-4 rounded-lg bg-primary-600 text-white font-semibold text-base hover:bg-primary-700 active:bg-primary-800 transition-colors">
-                    Finalizar compra
-                  </button>
+                  <Link
+                    to="/checkout"
+                    className="flex items-center justify-center gap-2 w-full px-6 py-4 rounded-lg bg-primary-600 text-white font-semibold text-base hover:bg-primary-700 active:bg-primary-800 transition-colors"
+                  >
+                    <span>Finalizar compra</span>
+                    <ArrowRight size={18} strokeWidth={2} />
+                  </Link>
                   <Link
                     to="/"
                     className="mt-3 flex items-center justify-center gap-2 w-full px-4 py-3 rounded-lg text-default-600 hover:text-default-900 hover:bg-default-100 transition-colors text-sm font-medium"
