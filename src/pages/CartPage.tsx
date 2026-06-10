@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { Button, Card, Separator } from '@heroui/react'
+import { Card, Separator } from '@heroui/react'
 import { Minus, Plus, Trash2, ShoppingBag, ArrowLeft } from 'lucide-react'
 import gsap from 'gsap'
 import { useCart } from '../context/CartContext'
@@ -28,10 +28,10 @@ export default function CartPage() {
         <p className="text-default-500 mb-6 text-center">Explora nuestros productos y encuentra algo que te guste.</p>
         <Link
           to="/"
-          className="inline-flex items-center px-6 py-3 rounded-lg bg-primary-600 text-white font-semibold hover:bg-primary-700 transition-colors"
+          className="flex items-center gap-2 px-6 py-3 rounded-lg bg-primary-600 text-white font-semibold hover:bg-primary-700 transition-colors"
         >
-          <ArrowLeft size={18} className="mr-2" />
-          Seguir comprando
+          <ArrowLeft size={18} strokeWidth={2} />
+          <span>Seguir comprando</span>
         </Link>
       </div>
     )
@@ -61,46 +61,39 @@ export default function CartPage() {
                     </div>
                     <div className="flex items-center justify-between mt-4">
                       <div className="flex items-center gap-2">
-                        <Button
-                          isIconOnly
-                          size="sm"
-                          variant="outline"
-                          onPress={() => updateQuantity(product.id, quantity - 1)}
+                        <button
+                          onClick={() => updateQuantity(product.id, quantity - 1)}
+                          className="flex items-center justify-center w-8 h-8 rounded-lg border border-default-300 hover:bg-default-100 active:bg-default-200 transition-colors"
                         >
-                          <Minus size={16} />
-                        </Button>
+                          <Minus size={16} strokeWidth={2.5} />
+                        </button>
                         <span className="w-8 text-center font-semibold">{quantity}</span>
-                        <Button
-                          isIconOnly
-                          size="sm"
-                          variant="outline"
-                          onPress={() => updateQuantity(product.id, quantity + 1)}
+                        <button
+                          onClick={() => updateQuantity(product.id, quantity + 1)}
+                          className="flex items-center justify-center w-8 h-8 rounded-lg border border-default-300 hover:bg-default-100 active:bg-default-200 transition-colors"
                         >
-                          <Plus size={16} />
-                        </Button>
+                          <Plus size={16} strokeWidth={2.5} />
+                        </button>
                       </div>
-                      <Button
-                        isIconOnly
-                        size="sm"
-                        variant="danger"
-                        onPress={() => removeFromCart(product.id)}
+                      <button
+                        onClick={() => removeFromCart(product.id)}
+                        className="flex items-center justify-center w-9 h-9 rounded-lg text-danger hover:bg-danger-50 active:bg-danger-100 transition-colors"
                       >
-                        <Trash2 size={18} />
-                      </Button>
+                        <Trash2 size={18} strokeWidth={2} />
+                      </button>
                     </div>
                   </div>
                 </Card.Content>
               </Card>
             ))}
 
-            <Button
-              variant="danger"
-              className="mt-2"
-              onPress={clearCart}
+            <button
+              onClick={clearCart}
+              className="flex items-center gap-2 px-4 py-2.5 rounded-lg text-danger hover:bg-danger-50 active:bg-danger-100 transition-colors font-medium text-sm"
             >
-              <Trash2 size={18} />
-              <span className="ml-2">Vaciar carrito</span>
-            </Button>
+              <Trash2 size={18} strokeWidth={2} />
+              <span>Vaciar carrito</span>
+            </button>
           </div>
 
           {/* Summary */}
@@ -124,15 +117,15 @@ export default function CartPage() {
                     <span>Total</span>
                     <span>${totalPrice.toFixed(2)}</span>
                   </div>
-                  <Button variant="primary" className="w-full font-semibold py-4 md:py-6">
+                  <button className="flex items-center justify-center gap-2 w-full px-6 py-4 rounded-lg bg-primary-600 text-white font-semibold text-base hover:bg-primary-700 active:bg-primary-800 transition-colors">
                     Finalizar compra
-                  </Button>
+                  </button>
                   <Link
                     to="/"
-                    className="mt-2 inline-flex items-center justify-center w-full px-4 py-2 rounded-lg text-default-600 hover:text-default-900 hover:bg-default-100 transition-colors text-sm"
+                    className="mt-3 flex items-center justify-center gap-2 w-full px-4 py-3 rounded-lg text-default-600 hover:text-default-900 hover:bg-default-100 transition-colors text-sm font-medium"
                   >
-                    <ArrowLeft size={18} className="mr-2" />
-                    Seguir comprando
+                    <ArrowLeft size={18} strokeWidth={2} />
+                    <span>Seguir comprando</span>
                   </Link>
                 </Card.Content>
               </Card>

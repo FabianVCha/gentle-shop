@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
-import { Button, Card, Badge } from '@heroui/react'
+import { Card, Badge } from '@heroui/react'
 import { ArrowLeft, ShoppingCart, Star, Package, Check } from 'lucide-react'
 import gsap from 'gsap'
 import { products } from '../data/products'
@@ -29,14 +29,13 @@ export default function ProductDetailPage() {
       <div className="flex-1 flex flex-col items-center justify-center bg-default-50 py-20 px-4">
         <h2 className="text-2xl font-semibold text-default-700 mb-2 text-center">Producto no encontrado</h2>
         <p className="text-default-500 mb-6 text-center">El producto que buscas no existe en nuestro catálogo.</p>
-        <Button
-          onPress={() => navigate('/')}
-          variant="primary"
-          className="bg-primary-600 text-white"
+        <button
+          onClick={() => navigate('/')}
+          className="flex items-center gap-2 px-6 py-3 rounded-lg bg-primary-600 text-white font-semibold hover:bg-primary-700 transition-colors"
         >
-          <ArrowLeft size={18} className="mr-2" />
-          Volver al inicio
-        </Button>
+          <ArrowLeft size={18} strokeWidth={2} />
+          <span>Volver al inicio</span>
+        </button>
       </div>
     )
   }
@@ -44,14 +43,13 @@ export default function ProductDetailPage() {
   return (
     <div className="flex-1 bg-default-50 py-6 md:py-10 px-4 md:px-6">
       <div className="max-w-7xl mx-auto">
-        <Button
-          variant="ghost"
-          onPress={() => navigate(-1)}
-          className="mb-4 md:mb-6"
+        <button
+          onClick={() => navigate(-1)}
+          className="flex items-center gap-2 text-default-600 hover:text-default-900 mb-4 md:mb-6 px-2 py-1 rounded-lg hover:bg-default-100 transition-colors"
         >
-          <ArrowLeft size={18} className="mr-2" />
-          Volver
-        </Button>
+          <ArrowLeft size={18} strokeWidth={2} />
+          <span>Volver</span>
+        </button>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 md:gap-8">
           {/* Image */}
@@ -74,12 +72,12 @@ export default function ProductDetailPage() {
               </h1>
 
               <div className="flex flex-wrap items-center gap-3 mb-3 md:mb-4">
-                <div className="flex items-center gap-1">
-                  <Star size={20} className="text-secondary fill-secondary" />
+                <div className="flex items-center gap-1.5">
+                  <Star size={20} className="text-secondary fill-secondary flex-shrink-0" />
                   <span className="font-semibold text-default-900">{product.rating}</span>
                 </div>
-                <div className="flex items-center gap-1 text-default-500">
-                  <Package size={18} />
+                <div className="flex items-center gap-1.5 text-default-500">
+                  <Package size={18} className="flex-shrink-0" />
                   <span>{product.stock} unidades disponibles</span>
                 </div>
               </div>
@@ -114,17 +112,16 @@ export default function ProductDetailPage() {
                     {product.stock > 0 ? 'En stock' : 'Agotado'}
                   </span>
                 </div>
-                <Button
-                  variant="primary"
-                  className="w-full bg-primary-600 text-white font-semibold py-4 md:py-6"
-                  onPress={() => addToCart(product)}
+                <button
+                  className="flex items-center justify-center gap-2 w-full px-6 py-4 rounded-lg bg-primary-600 text-white font-semibold text-base hover:bg-primary-700 active:bg-primary-800 transition-colors"
+                  onClick={() => addToCart(product)}
                 >
-                  <ShoppingCart size={20} className="mr-2" />
-                  Añadir al carrito
-                </Button>
+                  <ShoppingCart size={20} strokeWidth={2} />
+                  <span>Añadir al carrito</span>
+                </button>
                 <Link
                   to="/cart"
-                  className="mt-3 inline-flex items-center justify-center w-full px-4 py-2 rounded-lg text-primary-600 hover:text-primary-800 hover:bg-primary-50 transition-colors text-sm font-medium"
+                  className="mt-3 flex items-center justify-center w-full px-4 py-3 rounded-lg text-primary-600 hover:text-primary-800 hover:bg-primary-50 transition-colors text-sm font-medium"
                 >
                   Ver carrito
                 </Link>

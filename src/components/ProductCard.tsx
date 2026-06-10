@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { Card, Button, Badge } from '@heroui/react'
+import { Card, Badge } from '@heroui/react'
 import { ShoppingCart, Star } from 'lucide-react'
 import gsap from 'gsap'
 import type { Product } from '../data/products'
@@ -42,8 +42,8 @@ export default function ProductCard({ product }: ProductCardProps) {
           </Link>
           <div className="p-4">
             <Link to={`/product/${product.id}`} className="block hover:opacity-80 transition-opacity">
-              <div className="flex items-center gap-1 mb-2">
-                <Star size={16} className="text-secondary fill-secondary" />
+              <div className="flex items-center gap-1.5 mb-2">
+                <Star size={16} className="text-secondary fill-secondary flex-shrink-0" />
                 <span className="text-sm text-default-600">{product.rating}</span>
                 <span className="text-xs text-default-400">({product.stock} disp.)</span>
               </div>
@@ -52,16 +52,17 @@ export default function ProductCard({ product }: ProductCardProps) {
             </Link>
           </div>
         </Card.Content>
-        <Card.Footer className="flex justify-between items-center px-4 pb-4 pt-0">
-          <span className="text-lg md:text-xl font-bold text-primary-700">${product.price.toFixed(2)}</span>
-          <Button
-            variant="primary"
-            size="sm"
+        <Card.Footer className="flex items-center justify-between px-4 pb-4 pt-0 gap-2">
+          <span className="text-lg md:text-xl font-bold text-primary-700 flex-shrink-0">
+            ${product.price.toFixed(2)}
+          </span>
+          <button
             onClick={() => addToCart(product)}
+            className="flex items-center gap-2 px-3 py-2 rounded-lg bg-primary-600 text-white font-semibold text-sm hover:bg-primary-700 active:bg-primary-800 transition-colors flex-shrink-0"
           >
-            <ShoppingCart size={18} />
-            <span className="ml-1 hidden sm:inline">Añadir</span>
-          </Button>
+            <ShoppingCart size={16} strokeWidth={2.5} className="flex-shrink-0" />
+            <span className="hidden sm:inline">Añadir</span>
+          </button>
         </Card.Footer>
       </Card>
     </div>

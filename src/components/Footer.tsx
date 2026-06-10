@@ -7,7 +7,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-8">
         <div>
           <Link to="/" className="flex items-center gap-2 text-white font-bold text-xl mb-4">
-            <Wrench className="text-secondary-400" size={28} />
+            <Wrench className="text-secondary-400" size={28} strokeWidth={2} />
             <span>Ferretería El Tornillo</span>
           </Link>
           <p className="text-sm text-default-400">
@@ -24,9 +24,9 @@ export default function Footer() {
         <div>
           <h3 className="text-white font-semibold text-lg mb-4">Contacto</h3>
           <ul className="space-y-2 text-sm">
-            <li className="flex items-center gap-2"><Mail size={16} /> contacto@eltornillo.com</li>
-            <li className="flex items-center gap-2"><Phone size={16} /> +1 (555) 123-4567</li>
-            <li className="flex items-center gap-2"><MapPin size={16} /> Bogotá, Colombia</li>
+            <li className="flex items-center gap-2"><Mail size={16} strokeWidth={2} /> contacto@eltornillo.com</li>
+            <li className="flex items-center gap-2"><Phone size={16} strokeWidth={2} /> +1 (555) 123-4567</li>
+            <li className="flex items-center gap-2"><MapPin size={16} strokeWidth={2} /> Bogotá, Colombia</li>
           </ul>
         </div>
       </div>

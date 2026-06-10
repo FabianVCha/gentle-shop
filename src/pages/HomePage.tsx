@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Button, Input } from '@heroui/react'
+import { Input } from '@heroui/react'
 import { SlidersHorizontal } from 'lucide-react'
 import gsap from 'gsap'
 import { products } from '../data/products'
@@ -64,7 +64,7 @@ export default function HomePage() {
             onChange={(e) => setSearch(e.target.value)}
             className="w-full md:max-w-md"
           />
-          <div className="flex items-center gap-2 w-full md:w-auto">
+          <div className="flex items-center gap-2 w-full md:w-auto justify-end">
             <SlidersHorizontal size={18} className="text-default-500" />
             <span className="text-sm text-default-500">{filtered.length} resultados</span>
           </div>
@@ -73,15 +73,17 @@ export default function HomePage() {
         {/* Categories - scrollable on mobile */}
         <div className="flex gap-2 mb-8 overflow-x-auto pb-2 md:pb-0 md:flex-wrap">
           {categories.map((cat) => (
-            <Button
+            <button
               key={cat}
-              size="sm"
-              variant={activeCategory === cat ? 'primary' : 'outline'}
-              onPress={() => setActiveCategory(cat)}
-              className="whitespace-nowrap flex-shrink-0"
+              onClick={() => setActiveCategory(cat)}
+              className={`flex items-center justify-center px-4 py-2 rounded-lg font-medium text-sm whitespace-nowrap flex-shrink-0 transition-colors ${
+                activeCategory === cat
+                  ? 'bg-primary-600 text-white shadow-sm'
+                  : 'bg-white text-default-700 border border-default-200 hover:bg-default-100'
+              }`}
             >
               {cat}
-            </Button>
+            </button>
           ))}
         </div>
 
