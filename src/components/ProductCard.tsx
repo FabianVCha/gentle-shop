@@ -1,6 +1,6 @@
 import { useRef } from 'react'
 import { Link } from 'react-router-dom'
-import { Card, Badge } from '@heroui/react'
+import { Card } from '@heroui/react'
 import { ShoppingCart, Star } from 'lucide-react'
 import gsap from 'gsap'
 import type { Product } from '../data/products'
@@ -30,9 +30,11 @@ export default function ProductCard({ product }: ProductCardProps) {
     <div ref={cardRef} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
       <Card className="w-full hover:shadow-xl transition-shadow duration-300 border border-default-200">
         <Card.Content className="p-0 relative">
-          <Badge color="accent" className="absolute top-2 left-2 z-10">
+          {/* Badge de categoría - altamente visible */}
+          <span className="absolute top-2 left-2 z-20 inline-flex items-center px-3 py-1 rounded-lg bg-primary-700 text-white text-xs font-bold shadow-lg border border-primary-500">
             {product.category}
-          </Badge>
+          </span>
+
           <Link to={`/product/${product.id}`} className="block overflow-hidden">
             <img
               src={product.image}
